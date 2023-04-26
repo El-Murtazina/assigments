@@ -333,7 +333,7 @@ int main() {
 #endif
 
     int work;
-    int qTemp = 7;
+    int qTemp = 10;
 
     ColumnVector t(qTemp);
     ColumnVector b(qTemp);
@@ -345,6 +345,10 @@ int main() {
     t.vectorr[4] = 8.46;
     t.vectorr[5] = 2.428;
     t.vectorr[6] = 19.61;
+    t.vectorr[7] = 5.66;
+    t.vectorr[8] = 12.85;
+    t.vectorr[9] = 9.61;
+
 
     b.vectorr[0] = 8.94;
     b.vectorr[1] = 9.3;
@@ -353,6 +357,9 @@ int main() {
     b.vectorr[4] = 9.58;
     b.vectorr[5] = 1.3;
     b.vectorr[6] = 4.98;
+    b.vectorr[7] = 15.58;
+    b.vectorr[8] = 13.3;
+    b.vectorr[9] = 4.44;
 
     int degree = 2;
 
