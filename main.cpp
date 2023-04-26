@@ -319,50 +319,28 @@ Matrix inverseMatrix(Matrix matrixAtransA){
     return result;
 }
 
-#ifdef WIN32
-#define GNUPLOT_NAME "C:\\gnuplot\\bin\\gnuplot -persist"
-#else
-#define GNUPLOT_NAME "gnuplot -persist"
-#endif
-
 int main() {
-#ifdef WIN32
-    FILE* pipe = _popen(GNUPLOT_NAME, "w");
-#else
-    FILE* pipe = popen(GNUPLOT_NAME, "w");
-#endif
-
-    int work;
-    int qTemp = 7;
-
-    ColumnVector t(qTemp);
-    ColumnVector b(qTemp);
-
-    t.vectorr[0] = 5.6;
-    t.vectorr[1] = 9.6;
-    t.vectorr[2] = 14.6;
-    t.vectorr[3] = 11.12;
-    t.vectorr[4] = 8.46;
-    t.vectorr[5] = 2.428;
-    t.vectorr[6] = 19.61;
-
-    b.vectorr[0] = 8.94;
-    b.vectorr[1] = 9.3;
-    b.vectorr[2] = 11.67;
-    b.vectorr[3] = 12.0;
-    b.vectorr[4] = 9.58;
-    b.vectorr[5] = 1.3;
-    b.vectorr[6] = 4.98;
-
-    int degree = 2;
-
-
+    int m, work, degree;
+    cin >> m;
+    vector<double> vectort;
+    vector<double> vectorb;
+    for (int i = 0; i < m; i++){
+        cin >> work;
+        vectort.push_back(work);
+        cin >>work;
+        vectorb.push_back(work);
+    }
+    ColumnVector vectorT (m);
+    ColumnVector vectorB (m);
+    vectorT = (vectorT = vectort);
+    vectorB = (vectorB = vectorb);
+    cin >> degree;
     cout << "A:"<<endl;
-    Matrix matrixA(qTemp, degree+1);
-    for (int i = 0; i < qTemp; i ++){
+    Matrix matrixA(m, degree+1);
+    for (int i = 0; i < m; i ++){
         matrixA.matrix[i][0] = 1;
         for (int j = 1; j <= degree; j++){
-            matrixA.matrix[i][j] = pow(t.vectorr[i],j);
+            matrixA.matrix[i][j] = pow(vectorT.vectorr[i],j);
         }
     }
     cout << matrixA;
@@ -374,38 +352,11 @@ int main() {
     Matrix matrixInverse = inverseMatrix(matrixAtrA);
     cout<<matrixInverse;
     cout<< "A_T*b:"<<endl;
-    Matrix matrixAtrB = matrixAtr * b;
+    Matrix matrixAtrB = matrixAtr * vectorB;
     cout<<matrixAtrB;
     cout<<"x~:"<<endl;
     Matrix answer = matrixInverse * matrixAtrB;
     cout << answer;
 
-
-    ColumnVector coefficients(answer.n);
-    for (int i = 0; i < answer.n; i++){
-        coefficients.vectorr[i] = answer.matrix[i][0];
-    }
-
-    fprintf(pipe, "set yrange [0:25]\n");
-    fprintf(pipe, "set xrange [0:22]\n");
-
-    fprintf(pipe, "plot %lf*x**2 + %lf*x**1 + %lf*x**0 lc 'black', '-' with points pt 6 lc 'blue'\n",
-            coefficients.vectorr[2], coefficients.vectorr[1], coefficients.vectorr[0]);
-
-
-    for(int i = 0 ; i < qTemp; i++){
-        fprintf(pipe, "%f\t%f\n", t.vectorr[i], b.vectorr[i]);
-    }
-
-    fprintf(pipe, "e\n");
-    fflush(pipe);
-
-#ifdef WIN32
-    _pclose(pipe);
-#else
-    pclose(pipe);
-#endif
-
     return 0;
-
 }
